@@ -1,0 +1,8 @@
+{
+  "DoGetSteamName": true,
+  "DefaultName": "USER",
+  "Port": 9750,
+  "DoKoalaCollision": false,
+  "CreateLogFile": true,
+  "AttemptReconnect": true
+}
