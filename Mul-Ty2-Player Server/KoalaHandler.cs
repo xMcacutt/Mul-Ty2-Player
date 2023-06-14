@@ -45,6 +45,8 @@ namespace MT2PServer
         public static void SendKoalaAvailability(ushort recipient)
         {
             foreach (Player player in PlayerHandler.Players.Values) AnnounceKoalaAssigned(player.Koala.KoalaName, player.Name, player.ClientID, player.IsHost, recipient, false);
+            Message message = Message.Create(MessageSendMode.Reliable, MessageID.KoalaAvail);
+            Server._Server.Send(message, recipient);
         }
 
         public void ReturnKoala(Player player)
@@ -60,7 +62,7 @@ namespace MT2PServer
                         0.2f,
                     };
                     byte[] byteArray = defaultCoords.SelectMany(BitConverter.GetBytes).ToArray();
-                    Server.SendCoordinates(player.ClientID, player.Koala.KoalaName, player.PreviousLevel,byteArray, 0f, player.OnMenu);
+                    Server.SendCoordinates(player.ClientID, player.Koala.KoalaName, player.PreviousLevel, byteArray, 0f, player.OnMenu);
                 }
 
             }

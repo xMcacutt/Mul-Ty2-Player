@@ -25,6 +25,7 @@ namespace MT2PServer
         AnnounceDisconnect,
         P2PMessage,
         Ready,
-        Countdown
+        Countdown,
+        KoalaAvail
     }
 }

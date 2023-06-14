@@ -25,6 +25,8 @@ namespace MT2PServer
             Name = name;
             ClientID = id;
             IsHost = isHost;
+            Coordinates = new byte[12];
+            CurrentLevel = "mainmenu";
             IsReady = isReady;
             OnMenu = onMenu;
         }

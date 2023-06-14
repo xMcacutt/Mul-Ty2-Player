@@ -23,7 +23,11 @@ namespace MT2PClient
         public void GetCurrentLevel()
         {
             ProcessHandler.TryRead(0x4F3888, 8, out byte[]? buffer, true);
-            if (buffer == null) return;
+            if (buffer == null)
+            {
+                CurrentLevel = "mainmenu"; 
+                return;
+            }
             CurrentLevel = Encoding.ASCII.GetString(buffer).TrimEnd();
             InMainWorld = (!CurrentLevel.StartsWith("r", StringComparison.CurrentCultureIgnoreCase) && 
                 !CurrentLevel.StartsWith("m", StringComparison.CurrentCultureIgnoreCase));

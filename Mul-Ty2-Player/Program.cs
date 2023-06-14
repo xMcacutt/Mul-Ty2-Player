@@ -7,12 +7,12 @@ namespace MT2PClient
 
         static void Main(string[] args)
         {
+            Console.WriteLine("Welcome to MT2P: Ensure Ty2 is Open!");
             while (!ProcessHandler.FindTyProcess())
             {
 
             }
             Console.WriteLine("Found Ty2");
-            Console.ReadLine();
             Client = new Client();
             Console.WriteLine("Enter Name");
             string name = Console.ReadLine();
@@ -21,7 +21,7 @@ namespace MT2PClient
             string ip = Console.ReadLine();
             Console.Clear();
             Console.WriteLine("Starting Client");
-            Client.StartClient(name, pass, ip);
+            Client.StartClient(ip, name, pass);
         }
     }
 }

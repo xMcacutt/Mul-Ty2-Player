@@ -48,7 +48,7 @@ namespace MT2PClient
 
             Message authentication = Message.Create();
             authentication.AddString(_pass);
-            if (!_ip.Contains(':')) { _ip += ":9750" /*+ SettingsHandler.Settings.Port*/; }
+            if (!_ip.Contains(':')) { _ip += ":8750" /*+ SettingsHandler.Settings.Port*/; }
             _client.Connect(_ip, 5, 0, authentication);
 
             Thread _loop = new(ClientLoop);
@@ -63,8 +63,8 @@ namespace MT2PClient
                 {
                     try
                     {                        
-                        HHero.SendCoordinates();
                         HLevel.GetCurrentLevel();
+                        HHero.SendCoordinates();
                         if (HLevel.InMainWorld)
                         {
                             //NEW LEVEL SETUP STUFF
@@ -117,7 +117,7 @@ namespace MT2PClient
             //BasicIoC.KoalaSelectViewModel.Setup();
             //BasicIoC.LoginViewModel.ConnectionAttemptSuccessful = true;
             //BasicIoC.LoginViewModel.ConnectionAttemptCompleted = true;
-            IsRunning = true;
+            Console.WriteLine("Connected Successfully!");
         }
 
         private static void Disconnected(object sender, Riptide.DisconnectedEventArgs e)

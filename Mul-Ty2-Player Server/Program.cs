@@ -32,7 +32,7 @@ namespace MT2PServer
         {
             Console.Title = "Mul-Ty-Player Server";
 
-            //SettingsHandler.Setup();
+            SettingsHandler.Setup();
 
             Server.StartServer();
 
