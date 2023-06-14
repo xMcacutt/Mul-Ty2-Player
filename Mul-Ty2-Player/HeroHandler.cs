@@ -31,7 +31,7 @@ namespace MT2PClient
         {
             //SENDS CURRENT COORDINATES TO SERVER WITH CURRENT LEVEL AND LOADING STATE
             Message message = Message.Create(MessageSendMode.Unreliable, MessageID.PlayerInfo);
-            message.AddBool(Client.HLevel.InMainWorld);
+            message.AddBool(!Client.HLevel.InMainWorld);
             message.AddString(Client.HLevel.CurrentLevel);
             message.AddBytes(Coordinates);
             message.AddFloat(Yaw);

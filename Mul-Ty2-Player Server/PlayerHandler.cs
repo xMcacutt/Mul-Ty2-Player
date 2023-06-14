@@ -42,7 +42,6 @@ namespace MT2PServer
             {
                 player.OnMenu = message.GetBool();
                 player.CurrentLevel = message.GetString();
-                Console.WriteLine(player.CurrentLevel);
                 player.Coordinates = message.GetBytes();
                 player.Yaw = message.GetFloat();
             }
