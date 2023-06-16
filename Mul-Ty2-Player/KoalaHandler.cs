@@ -23,6 +23,7 @@ namespace MT2PClient
 
         public static void SetCoordAddresses()
         {
+            Thread.Sleep(1000);
             int koalaPath = 0x4EBFF4;
             KoalaBase = PointerCalculations.GetPointerAddress(koalaPath, KoalaPathOffsets);
             koalaPath = KoalaBase;
