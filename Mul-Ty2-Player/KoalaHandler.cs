@@ -33,6 +33,7 @@ namespace MT2PClient
                 ProcessHandler.TryRead(KoalaBase, out int result, false);
                 ProcessHandler.TryRead(result, 0xD, out indicator, false);
                 indicatorString = Encoding.ASCII.GetString(indicator);
+                Console.WriteLine(indicatorString);
             }
             koalaPath = KoalaBase;
             foreach(string koalaName in KoalaNames)
@@ -97,18 +98,18 @@ namespace MT2PClient
         {
             if (!Client.KoalaSelected || Client.Relaunching) return;
             bool onMenu = message.GetBool();
-            Console.Write("\n" + onMenu);
+            //Console.Write("\n" + onMenu);
             ushort clientID = message.GetUShort();
-            Console.Write(" " + clientID);
+            //Console.Write(" " + clientID);
             if (onMenu) return;
             string koalaName = message.GetString();
-            Console.Write(" " + koalaName);
+            //Console.Write(" " + koalaName);
             string level = message.GetString();
-            Console.Write(" " + level);
+            //Console.Write(" " + level);
             byte[] coordinates = message.GetBytes();
-            Console.Write(" " + coordinates[0] + ", " + coordinates[1] + ", " + coordinates[2]);
+            //Console.Write(" " + coordinates[0] + ", " + coordinates[1] + ", " + coordinates[2]);
             float yaw = message.GetFloat();
-            Console.Write(" " + yaw + "\n");
+            //Console.Write(" " + yaw + "\n");
             //SANITY CHECK THAT WE HAVEN'T BEEN SENT OUR OWN COORDINATES AND WE AREN'T LOADING, ON THE MENU, OR IN A DIFFERENT LEVEL 
             if (!PlayerHandler.Players.TryGetValue(Client._client.Id, out Player p) ||
                 !Client.HLevel.InMainWorld ||

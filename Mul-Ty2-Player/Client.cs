@@ -71,7 +71,6 @@ namespace MT2PClient
                             if (!HLevel.NewLevelSetup)
                             {
                                 HLevel.DoLevelSetup();
-                                HLevel.NewLevelSetup = true;
                             }
 
                             HHero.GetTyPosRot();

@@ -8,9 +8,11 @@ namespace MT2PClient
 {
     internal class LevelHandler
     {
+        public string PreviousLevel = "mainmenu";
         public string CurrentLevel;
         public bool InMainWorld;
         public bool NewLevelSetup;
+
         public void DoLevelSetup()
         {
             //HSync.SetMemAddrs();
@@ -31,6 +33,11 @@ namespace MT2PClient
             CurrentLevel = Encoding.ASCII.GetString(buffer).TrimEnd();
             InMainWorld = (!CurrentLevel.StartsWith("r", StringComparison.CurrentCultureIgnoreCase) && 
                 !CurrentLevel.StartsWith("m", StringComparison.CurrentCultureIgnoreCase));
+            if(CurrentLevel != PreviousLevel)
+            {
+                PreviousLevel = CurrentLevel;
+                NewLevelSetup = false;
+            }
         }
     }
 }
