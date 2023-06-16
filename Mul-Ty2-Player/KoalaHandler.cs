@@ -23,9 +23,17 @@ namespace MT2PClient
 
         public static void SetCoordAddresses()
         {
-            Thread.Sleep(1000);
             int koalaPath = 0x4EBFF4;
-            KoalaBase = PointerCalculations.GetPointerAddress(koalaPath, KoalaPathOffsets);
+
+            byte[]? indicator;
+            string indicatorString = "notset";
+            while(indicatorString != "A085_KoalaBoy")
+            {
+                KoalaBase = PointerCalculations.GetPointerAddress(koalaPath, KoalaPathOffsets);
+                ProcessHandler.TryRead(KoalaBase, out int result, false);
+                ProcessHandler.TryRead(result, 0xD, out indicator, false);
+                indicatorString = Encoding.ASCII.GetString(indicator);
+            }
             koalaPath = KoalaBase;
             foreach(string koalaName in KoalaNames)
             {
