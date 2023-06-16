@@ -19,6 +19,10 @@ namespace MT2PClient
         public KoalaHandler()
         {
             KoalaBaseAddrs = new Dictionary<string, int>();
+            foreach(string koalaName in KoalaNames)
+            {
+                KoalaBaseAddrs.Add(koalaName, 0);
+            }
         }
 
         public static void SetCoordAddresses()
@@ -39,7 +43,8 @@ namespace MT2PClient
             foreach(string koalaName in KoalaNames)
             {
                 ProcessHandler.TryRead(koalaPath + 0x18, out koalaPath, false);
-                Client.HKoala.KoalaBaseAddrs.Add(koalaName, koalaPath);
+
+                Client.HKoala.KoalaBaseAddrs[koalaName] = koalaPath;
             }
         }
 
