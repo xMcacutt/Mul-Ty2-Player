@@ -32,7 +32,7 @@ namespace MT2PClient
             }
             CurrentLevel = Encoding.ASCII.GetString(buffer).TrimEnd();
             InMainWorld = (!CurrentLevel.StartsWith("r", StringComparison.CurrentCultureIgnoreCase) && 
-                !CurrentLevel.StartsWith("m", StringComparison.CurrentCultureIgnoreCase));
+                !CurrentLevel.Equals("mainmenu", StringComparison.CurrentCultureIgnoreCase));
             if(CurrentLevel != PreviousLevel)
             {
                 PreviousLevel = CurrentLevel;

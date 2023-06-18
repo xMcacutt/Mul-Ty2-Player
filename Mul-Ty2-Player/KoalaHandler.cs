@@ -122,7 +122,6 @@ namespace MT2PClient
                 p.Koala.KoalaName == koalaName
             )
             {
-                Console.WriteLine("Did not write");
                 return;
             }
             //WRITE POSITION AND ROTATION
