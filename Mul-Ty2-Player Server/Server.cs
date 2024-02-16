@@ -42,13 +42,8 @@ namespace MT2PServer
                 {
                     foreach (Player player in PlayerHandler.Players.Values)
                     {
-                        if (player.CurrentLevel == null) player.CurrentLevel = "mainmenu";
-                        if (player.CurrentLevel != player.PreviousLevel)
-                        {
-                            HKoala.ReturnKoala(player);
-                            player.PreviousLevel = player.CurrentLevel;
-                        }
-                        SendCoordinates(player.ClientID, player.Koala.KoalaName, player.CurrentLevel, player.Coordinates, player.Yaw, player.OnMenu);
+                        //if (player.CurrentLevel == null) player.CurrentLevel = "mainmenu";
+                        SendCoordinates(player.ClientID, player.Koala.KoalaName, player.Coordinates, player.Yaw, player.OnMenu);
                     }
                 }
                 Thread.Sleep(10);
@@ -97,22 +92,15 @@ namespace MT2PServer
             }
         }
 
-        public static void SendCoordinates(ushort clientID, string koalaName, string level, byte[] coordinates, float yaw, bool onMenu)
+        public static void SendCoordinates(ushort clientID, string koalaName, byte[] coordinates, float yaw, bool onMenu)
         {
-            foreach (Player player in PlayerHandler.Players.Values)
-            {
-                Message message = Message.Create(MessageSendMode.Unreliable, MessageID.KoalaCoordinates);
-                message.AddBool(onMenu);
-                message.AddUShort(clientID);
-                message.AddString(koalaName);
-                message.AddString(level);
-                message.AddBytes(coordinates);
-                message.AddFloat(yaw);
-                if (player.Coordinates != null && player.Name != null)
-                {
-                    _Server.SendToAll(message, clientID);
-                }
-            }
+            var message = Message.Create(MessageSendMode.Unreliable, MessageID.KoalaCoordinates);
+            message.AddBool(onMenu);
+            message.AddUShort(clientID);
+            message.AddString(koalaName);
+            message.AddBytes(coordinates);
+            message.AddFloat(yaw); 
+            _Server.SendToAll(message, clientID);
         }
 
         public static void SendMessageToClient(string str, bool printToServer, ushort to)

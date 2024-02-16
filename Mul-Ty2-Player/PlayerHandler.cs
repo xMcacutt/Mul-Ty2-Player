@@ -31,13 +31,13 @@ namespace MT2PClient
 
         public static void AnnounceSelection(string koalaName, string name, bool isHost)
         {
-            Message message = Message.Create(MessageSendMode.Reliable, MessageID.KoalaSelected);
+            var message = Message.Create(MessageSendMode.Reliable, MessageID.KoalaSelected);
             message.AddString(koalaName);
             message.AddString(name);
-            message.AddUShort(MT2PClient.Client._client.Id);
+            message.AddUShort(Client._client.Id);
             message.AddBool(isHost);
-            MT2PClient.Client._client.Send(message);
-            MT2PClient.Client.KoalaSelected = true;
+            Client._client.Send(message);
+            Client.KoalaSelected = true;
         }
 
         public static void RemovePlayer(ushort id)

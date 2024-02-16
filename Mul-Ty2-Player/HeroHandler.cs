@@ -10,9 +10,8 @@ namespace MT2PClient
 {
     public class HeroHandler
     {
-
-        const int TY_POS_BASE_ADDRESS = 0x4ED328;
-        const int TY_ROT_BASE_ADDRESS = 0x4EB524;
+        private const int TY_POS_BASE_ADDRESS = 0x4EBEE8;
+        private const int TY_ROT_BASE_ADDRESS = 0x4EB524;
         public byte[] Coordinates;
         public float Yaw;
 
@@ -32,7 +31,6 @@ namespace MT2PClient
             //SENDS CURRENT COORDINATES TO SERVER WITH CURRENT LEVEL AND LOADING STATE
             Message message = Message.Create(MessageSendMode.Unreliable, MessageID.PlayerInfo);
             message.AddBool(!Client.HLevel.InMainWorld);
-            message.AddString(Client.HLevel.CurrentLevel);
             message.AddBytes(Coordinates);
             message.AddFloat(Yaw);
             Client._client.Send(message);

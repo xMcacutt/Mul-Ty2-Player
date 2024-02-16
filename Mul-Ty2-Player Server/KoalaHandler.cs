@@ -62,7 +62,7 @@ namespace MT2PServer
                         0.2f,
                     };
                     byte[] byteArray = defaultCoords.SelectMany(BitConverter.GetBytes).ToArray();
-                    Server.SendCoordinates(player.ClientID, player.Koala.KoalaName, player.PreviousLevel, byteArray, 0f, player.OnMenu);
+                    Server.SendCoordinates(player.ClientID, player.Koala.KoalaName, byteArray, 0f, player.OnMenu);
                 }
 
             }

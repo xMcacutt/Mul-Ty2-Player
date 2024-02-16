@@ -106,19 +106,16 @@ namespace MT2PClient
             //Console.Write("\n" + onMenu);
             ushort clientID = message.GetUShort();
             //Console.Write(" " + clientID);
-            if (onMenu) return;
+            //if (onMenu) return;
             string koalaName = message.GetString();
             //Console.Write(" " + koalaName);
-            string level = message.GetString();
-            //Console.Write(" " + level);
             byte[] coordinates = message.GetBytes();
-            //Console.Write(" " + coordinates[0] + ", " + coordinates[1] + ", " + coordinates[2]);
+            Console.Write(" " + coordinates[0] + ", " + coordinates[1] + ", " + coordinates[2]);
             float yaw = message.GetFloat();
             //Console.Write(" " + yaw + "\n");
             //SANITY CHECK THAT WE HAVEN'T BEEN SENT OUR OWN COORDINATES AND WE AREN'T LOADING, ON THE MENU, OR IN A DIFFERENT LEVEL 
             if (!PlayerHandler.Players.TryGetValue(Client._client.Id, out Player p) ||
                 !Client.HLevel.InMainWorld ||
-                level != Client.HLevel.CurrentLevel ||
                 p.Koala.KoalaName == koalaName
             )
             {
@@ -126,7 +123,7 @@ namespace MT2PClient
             }
             //WRITE POSITION AND ROTATION
             ProcessHandler.WriteData(Client.HKoala.KoalaBaseAddrs[koalaName] + 0x40, new RotationMatrix(yaw).GetBytes(), $"{koalaName} rotation");
-            ProcessHandler.WriteData(Client.HKoala.KoalaBaseAddrs[koalaName] + 0x70, coordinates, $"Writing coordinates for koala {koalaName} in level {level}");
+            ProcessHandler.WriteData(Client.HKoala.KoalaBaseAddrs[koalaName] + 0x70, coordinates, $"Writing coordinates for koala {koalaName}");
             
         }
     }

@@ -41,7 +41,6 @@ namespace MT2PServer
             if (Players.TryGetValue(fromClientId, out Player player))
             {
                 player.OnMenu = message.GetBool();
-                player.CurrentLevel = message.GetString();
                 player.Coordinates = message.GetBytes();
                 player.Yaw = message.GetFloat();
             }
