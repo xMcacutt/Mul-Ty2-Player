@@ -11,7 +11,7 @@ namespace MT2PClient
 {
     internal class KoalaHandler
     {
-        public static int[] KoalaPathOffsets = { 0xB0, 0x34, 0x4C, 0x8, 0x8, 0x8, 0x38, 0x40, 0x18, 0x0 };
+        public static int[] KoalaPathOffsets = { 0x3c, 0x3c, 0x3c, 0xc, 0x0 };
         public static int KoalaBase;
         public static string[] KoalaNames = new string[] { "Dubbo", "Mim", "Snugs", "Gummy", "_", "Elizabeth", "Katie", "Kiki", "Bonnie" };
         public Dictionary<string, int> KoalaBaseAddrs;
@@ -27,7 +27,7 @@ namespace MT2PClient
 
         public static void SetCoordAddresses()
         {
-            int koalaPath = 0x4EBFF4;
+            int koalaPath = 0x004F3FFC;
 
             byte[]? indicator;
             string indicatorString = "notset";

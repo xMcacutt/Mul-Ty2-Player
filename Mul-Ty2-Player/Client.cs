@@ -63,7 +63,6 @@ namespace MT2PClient
                 {
                     try
                     {                        
-                        HLevel.GetCurrentLevel();
                         HHero.SendCoordinates();
                         if (HLevel.InMainWorld)
                         {
@@ -92,7 +91,7 @@ namespace MT2PClient
                     catch (TyClosedException ex)
                     {
                         Relaunching = true;
-                        Console.WriteLine(ex.Message);
+                        //Console.WriteLine(ex.Message);
                         //BasicIoC.SFXPlayer.PlaySound(SFX.MenuCancel);
                         while (!ProcessHandler.FindTyProcess())
                         {
