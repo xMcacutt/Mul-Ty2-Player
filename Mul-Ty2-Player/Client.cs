@@ -63,6 +63,7 @@ namespace MT2PClient
                 {
                     try
                     {                        
+                        HLevel.GetCurrentLevel();
                         HHero.SendCoordinates();
                         if (HLevel.InMainWorld)
                         {
@@ -71,7 +72,6 @@ namespace MT2PClient
                             {
                                 HLevel.DoLevelSetup();
                             }
-
                             HHero.GetTyPosRot();
                             /*//OBSERVERS
                             if (SettingsHandler.DoOpalSyncing && HLevel.MainStages.Contains(HLevel.CurrentLevelId))
