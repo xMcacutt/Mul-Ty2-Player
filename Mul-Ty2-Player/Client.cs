@@ -64,7 +64,6 @@ namespace MT2PClient
                     try
                     {                        
                         HLevel.GetCurrentLevel();
-                        HHero.SendCoordinates();
                         if (HLevel.InMainWorld)
                         {
                             //NEW LEVEL SETUP STUFF
@@ -73,19 +72,7 @@ namespace MT2PClient
                                 HLevel.DoLevelSetup();
                             }
                             HHero.GetTyPosRot();
-                            /*//OBSERVERS
-                            if (SettingsHandler.DoOpalSyncing && HLevel.MainStages.Contains(HLevel.CurrentLevelId))
-                            {
-                                SyncHandler.HOpal.CheckObserverChanged();
-                                SyncHandler.HCrate.CheckObserverChanged();
-                            }
-                            if (SettingsHandler.DoTESyncing) SyncHandler.HThEg.CheckObserverChanged();
-                            if (SettingsHandler.DoCogSyncing) SyncHandler.HCog.CheckObserverChanged();
-                            if (SettingsHandler.DoBilbySyncing) SyncHandler.HBilby.CheckObserverChanged();
-                            if (SettingsHandler.DoRangSyncing) SyncHandler.HAttribute.CheckObserverChanged();
-                            if (SettingsHandler.DoPortalSyncing) SyncHandler.HPortal.CheckObserverChanged();
-                            if (SettingsHandler.DoCliffsSyncing) SyncHandler.HCliffs.CheckObserverChanged();
-                            */
+                            HHero.SendCoordinates();
                         }
                     }
                     catch (TyClosedException ex)

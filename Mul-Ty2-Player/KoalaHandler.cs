@@ -13,7 +13,7 @@ namespace MT2PClient
     {
         public static int[] KoalaPathOffsets = { 0x3c, 0x3c, 0x3c, 0xc, 0x0 };
         public static int KoalaBase;
-        public static string[] KoalaNames = new string[] { "Dubbo", "Boonie", "Snugs", "Gummy", "_", "Elizabeth", "Katie", "Kiki", "Mim" };
+        public static string[] KoalaNames = new string[] { "Dubbo", "Boonie", "Snugs", "Gummy", "Elizabeth", "Katie", "Kiki", "Mim" };
         public Dictionary<string, int> KoalaBaseAddrs;
 
         public KoalaHandler()
@@ -68,7 +68,7 @@ namespace MT2PClient
             Console.WriteLine("Please select your koala by typing its number:");
             Dictionary<int, string> availableKoalas = new();
             var index = 1;
-            var unassignedKoalaNames = KoalaNames.Where(koalaName => koalaName != "_" && !PlayerHandler.Players.Values.Any(player => player.Koala.KoalaName == koalaName));
+            var unassignedKoalaNames = KoalaNames.Where(koalaName => PlayerHandler.Players.Values.All(player => player.Koala.KoalaName != koalaName));
             foreach (var unassignedKoalaName in unassignedKoalaNames)
             {
                 var listing = index + ". " + unassignedKoalaName;
@@ -119,6 +119,8 @@ namespace MT2PClient
             {
                 return;
             }
+            Console.WriteLine();
+            Console.WriteLine(Client.HKoala.KoalaBaseAddrs[koalaName].ToString("X"));
             //WRITE POSITION AND ROTATION
             ProcessHandler.WriteData(Client.HKoala.KoalaBaseAddrs[koalaName] + 0x40, new RotationMatrix(yaw).GetBytes(), $"{koalaName} rotation");
             ProcessHandler.WriteData(Client.HKoala.KoalaBaseAddrs[koalaName] + 0x70, coordinates, $"Writing coordinates for koala {koalaName}");
