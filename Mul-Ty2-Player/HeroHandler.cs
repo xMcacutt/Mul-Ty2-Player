@@ -10,7 +10,7 @@ namespace MT2PClient
 {
     public class HeroHandler
     {
-        private const int TY_POS_BASE_ADDRESS = 0x4EBEE8;
+        private const int TY_POS_BASE_ADDRESS = 0x4ED32C;
         private const int TY_ROT_BASE_ADDRESS = 0x4EB524;
         public byte[] Coordinates;
         public float Yaw;

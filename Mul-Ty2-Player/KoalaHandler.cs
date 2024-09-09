@@ -13,7 +13,7 @@ namespace MT2PClient
     {
         public static int[] KoalaPathOffsets = { 0x3c, 0x3c, 0x3c, 0xc, 0x0 };
         public static int KoalaBase;
-        public static string[] KoalaNames = new string[] { "Dubbo", "Mim", "Snugs", "Gummy", "_", "Elizabeth", "Katie", "Kiki", "Bonnie" };
+        public static string[] KoalaNames = new string[] { "Dubbo", "Boonie", "Snugs", "Gummy", "_", "Elizabeth", "Katie", "Kiki", "Mim" };
         public Dictionary<string, int> KoalaBaseAddrs;
 
         public KoalaHandler()
@@ -27,23 +27,21 @@ namespace MT2PClient
 
         public static void SetCoordAddresses()
         {
-            int koalaPath = 0x004F3FFC;
-
-            byte[]? indicator;
+            int koalaPath = 0x4F3FFC;
             string indicatorString = "notset";
             while(indicatorString != "A085_KoalaBoy")
             {
                 KoalaBase = PointerCalculations.GetPointerAddress(koalaPath, KoalaPathOffsets);
                 ProcessHandler.TryRead(KoalaBase, out int result, false);
-                ProcessHandler.TryRead(result, 0xD, out indicator, false);
-                indicatorString = Encoding.ASCII.GetString(indicator);
+                ProcessHandler.TryRead(result, 0xD, out var indicator, false);
+                if (indicator != null) 
+                    indicatorString = Encoding.ASCII.GetString(indicator);
                 Console.WriteLine(indicatorString);
             }
             koalaPath = KoalaBase;
-            foreach(string koalaName in KoalaNames)
+            foreach(var koalaName in KoalaNames)
             {
                 ProcessHandler.TryRead(koalaPath + 0x18, out koalaPath, false);
-
                 Client.HKoala.KoalaBaseAddrs[koalaName] = koalaPath;
             }
         }
@@ -51,11 +49,11 @@ namespace MT2PClient
         [MessageHandler((ushort)MessageID.KoalaSelected)]
         private static void HandleKoalaSelected(Message message)
         {
-            string koalaName = message.GetString();
-            string playerName = message.GetString();
-            ushort clientID = message.GetUShort();
-            bool isHost = message.GetBool();
-            PlayerHandler.AddPlayer(koalaName, playerName, clientID, isHost);
+            var koalaName = message.GetString();
+            var playerName = message.GetString();
+            var clientId = message.GetUShort();
+            var isHost = message.GetBool();
+            PlayerHandler.AddPlayer(koalaName, playerName, clientId, isHost);
         }
 
         [MessageHandler((ushort)MessageID.KoalaAvail)]
@@ -69,18 +67,18 @@ namespace MT2PClient
         {
             Console.WriteLine("Please select your koala by typing its number:");
             Dictionary<int, string> availableKoalas = new();
-            int index = 1;
+            var index = 1;
             var unassignedKoalaNames = KoalaNames.Where(koalaName => koalaName != "_" && !PlayerHandler.Players.Values.Any(player => player.Koala.KoalaName == koalaName));
-            foreach (string unassignedKoalaName in unassignedKoalaNames)
+            foreach (var unassignedKoalaName in unassignedKoalaNames)
             {
-                string listing = index + ". " + unassignedKoalaName;
+                var listing = index + ". " + unassignedKoalaName;
                 Console.WriteLine(listing);
                 availableKoalas.Add(index, unassignedKoalaName);
                 index++;
             }
             while (true)
             {
-                string input = Console.ReadLine();
+                var input = Console.ReadLine();
                 if (string.IsNullOrWhiteSpace(input) || !availableKoalas.TryGetValue(int.Parse(input), out string? koala))
                 {
                     Console.WriteLine("Please enter a valid koala ID.");
