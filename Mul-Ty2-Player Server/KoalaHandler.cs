@@ -20,9 +20,9 @@ namespace MT2PServer
         [MessageHandler((ushort)MessageID.KoalaSelected)]
         private static void AssignKoala(ushort fromClientId, Message message)
         {
+            var clientId = message.GetUShort();
             var koalaName = message.GetString();
             var playerName = message.GetString();
-            var clientId = message.GetUShort();
             var isHost = message.GetBool();
             PlayerHandler.AddPlayer(koalaName, playerName, clientId, isHost);
             AnnounceKoalaAssigned(koalaName, playerName, clientId, isHost, fromClientId, true);
@@ -31,9 +31,9 @@ namespace MT2PServer
         private static void AnnounceKoalaAssigned(string koalaName, string playerName, ushort clientId, bool isHost, ushort fromToClientId, bool bSendToAll)
         {
             Message announcement = Message.Create(MessageSendMode.Reliable, MessageID.KoalaSelected);
+            announcement.AddUShort(clientId);
             announcement.AddString(koalaName);
             announcement.AddString(playerName);
-            announcement.AddUShort(clientId);
             announcement.AddBool(isHost);
             if (bSendToAll)
             {
@@ -45,7 +45,8 @@ namespace MT2PServer
 
         public static void SendKoalaAvailability(ushort recipient)
         {
-            foreach (Player player in PlayerHandler.Players.Values) AnnounceKoalaAssigned(player.Koala.KoalaName, player.Name, player.ClientID, player.IsHost, recipient, false);
+            foreach (Player player in PlayerHandler.Players.Values) 
+                AnnounceKoalaAssigned(player.Koala.KoalaName, player.Name, player.ClientID, player.IsHost, recipient, false);
             Message message = Message.Create(MessageSendMode.Reliable, MessageID.KoalaAvail);
             Server._Server.Send(message, recipient);
         }
