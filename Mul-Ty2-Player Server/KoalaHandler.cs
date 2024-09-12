@@ -5,12 +5,13 @@ using System.Linq;
 using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
+using MT2PClient;
 
 namespace MT2PServer
 {
     internal class KoalaHandler
     {
-        public static string[] KoalaNames = { "Dubbo", "Mim", "Snugs", "Gummy", "_", "Elizabeth", "Katie", "Kiki", "Bonnie" };
+        public static readonly string[] KoalaNames = { "Dubbo", "Mim", "Snugs", "Gummy", "_", "Elizabeth", "Katie", "Kiki", "Bonnie" };
 
         public KoalaHandler()
         {
@@ -19,20 +20,20 @@ namespace MT2PServer
         [MessageHandler((ushort)MessageID.KoalaSelected)]
         private static void AssignKoala(ushort fromClientId, Message message)
         {
-            string koalaName = message.GetString();
-            string playerName = message.GetString();
-            ushort clientID = message.GetUShort();
-            bool isHost = message.GetBool();
-            PlayerHandler.AddPlayer(koalaName, playerName, clientID, isHost);
-            AnnounceKoalaAssigned(koalaName, playerName, clientID, isHost, fromClientId, true);
+            var koalaName = message.GetString();
+            var playerName = message.GetString();
+            var clientId = message.GetUShort();
+            var isHost = message.GetBool();
+            PlayerHandler.AddPlayer(koalaName, playerName, clientId, isHost);
+            AnnounceKoalaAssigned(koalaName, playerName, clientId, isHost, fromClientId, true);
         }
 
-        private static void AnnounceKoalaAssigned(string koalaName, string playerName, ushort clientID, bool isHost, ushort fromToClientId, bool bSendToAll)
+        private static void AnnounceKoalaAssigned(string koalaName, string playerName, ushort clientId, bool isHost, ushort fromToClientId, bool bSendToAll)
         {
             Message announcement = Message.Create(MessageSendMode.Reliable, MessageID.KoalaSelected);
             announcement.AddString(koalaName);
             announcement.AddString(playerName);
-            announcement.AddUShort(clientID);
+            announcement.AddUShort(clientId);
             announcement.AddBool(isHost);
             if (bSendToAll)
             {
@@ -51,20 +52,12 @@ namespace MT2PServer
 
         public void ReturnKoala(Player player)
         {
-            foreach (Player otherPlayer in PlayerHandler.Players.Values)
+            foreach (var otherPlayer in PlayerHandler.Players.Values)
             {
-                if (otherPlayer.CurrentLevel == player.PreviousLevel && otherPlayer.Name != player.Name)
-                {
-                    float[] defaultCoords =
-                    {
-                        0.1f,
-                        8750f,
-                        0.2f,
-                    };
-                    byte[] byteArray = defaultCoords.SelectMany(BitConverter.GetBytes).ToArray();
-                    Server.SendCoordinates(player.ClientID, player.Koala.KoalaName, byteArray, 0f, player.OnMenu);
-                }
-
+                if (otherPlayer.CurrentLevel != player.PreviousLevel || otherPlayer.Name == player.Name) 
+                    continue;
+                var posData = new PlayerPositionData { X = 0.1f, Y = 8750f, Z = 0.2f };
+                Program.HPlayer.SendCoordinates(player.ClientID, posData, player.OnMenu);
             }
         }
 

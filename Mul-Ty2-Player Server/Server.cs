@@ -1,12 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Numerics;
-using System.Reflection.Metadata.Ecma335;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-using Riptide;
+﻿using Riptide;
 using Riptide.Utils;
 
 namespace MT2PServer
@@ -42,8 +34,7 @@ namespace MT2PServer
                 {
                     foreach (Player player in PlayerHandler.Players.Values)
                     {
-                        //if (player.CurrentLevel == null) player.CurrentLevel = "mainmenu";
-                        SendCoordinates(player.ClientID, player.Koala.KoalaName, player.Coordinates, player.Yaw, player.OnMenu);
+                        Program.HPlayer.SendCoordinates(player.ClientID, player.PositionData, player.OnMenu);
                     }
                 }
                 Thread.Sleep(10);
@@ -90,17 +81,6 @@ namespace MT2PServer
                 PlayerHandler.RemovePlayer(e.Client.Id);
                 PlayerHandler.AnnounceDisconnect(e.Client.Id);
             }
-        }
-
-        public static void SendCoordinates(ushort clientID, string koalaName, byte[] coordinates, float yaw, bool onMenu)
-        {
-            var message = Message.Create(MessageSendMode.Unreliable, MessageID.KoalaCoordinates);
-            message.AddBool(onMenu);
-            message.AddUShort(clientID);
-            message.AddString(koalaName);
-            message.AddBytes(coordinates);
-            message.AddFloat(yaw); 
-            _Server.SendToAll(message, clientID);
         }
 
         public static void SendMessageToClient(string str, bool printToServer, ushort to)

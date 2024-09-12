@@ -13,14 +13,18 @@ namespace MT2PClient
         public ushort Id;
         public bool IsHost;
         public bool IsReady;
+        public bool OnMenu;
+        public PlayerPositionData PositionData;
 
-        public Player(Koala koala, string name, ushort id, bool isHost, bool isReady)
+        public Player(Koala koala, string name, ushort id, bool isHost, bool isReady, bool onMenu)
         {
             Koala = koala;
             Name = name;
             Id = id;
             IsHost = isHost;
             IsReady = isReady;
+            OnMenu = onMenu;
+            PositionData = new PlayerPositionData();
         }
     }
 }

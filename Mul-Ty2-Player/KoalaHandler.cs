@@ -11,9 +11,9 @@ namespace MT2PClient
 {
     internal class KoalaHandler
     {
-        public static int[] KoalaPathOffsets = { 0x3c, 0x3c, 0x3c, 0xc, 0x0 };
+        public static int[] KoalaPathOffsets = { 0x19c, 0x158, 0x3c, 0x3c, 0xc, 0x0  };
         public static int KoalaBase;
-        public static string[] KoalaNames = new string[] { "Dubbo", "Boonie", "Snugs", "Gummy", "_", "Elizabeth", "Katie", "Kiki", "Mim" };
+        public static string[] KoalaNames = new string[] { "Dubbo", "_", "Elizabeth", "Boonie", "Katie", "Gummy", "Kiki", "Snugs", "Mim" };
         public Dictionary<string, int> KoalaBaseAddrs;
 
         public KoalaHandler()
@@ -27,7 +27,7 @@ namespace MT2PClient
 
         public static void SetCoordAddresses()
         {
-            int koalaPath = 0x4F3FFC;
+            int koalaPath = 0x4E4ABC;
             string indicatorString = "notset";
             while(indicatorString != "A085_KoalaBoy")
             {
@@ -41,17 +41,17 @@ namespace MT2PClient
             koalaPath = KoalaBase;
             foreach(var koalaName in KoalaNames)
             {
-                ProcessHandler.TryRead(koalaPath + 0x18, out koalaPath, false);
                 Client.HKoala.KoalaBaseAddrs[koalaName] = koalaPath;
+                ProcessHandler.TryRead(koalaPath + 0x18, out koalaPath, false);
             }
         }
 
         [MessageHandler((ushort)MessageID.KoalaSelected)]
         private static void HandleKoalaSelected(Message message)
         {
+            var clientId = message.GetUShort();
             var koalaName = message.GetString();
             var playerName = message.GetString();
-            var clientId = message.GetUShort();
             var isHost = message.GetBool();
             PlayerHandler.AddPlayer(koalaName, playerName, clientId, isHost);
         }
@@ -99,32 +99,24 @@ namespace MT2PClient
         [MessageHandler((ushort)MessageID.KoalaCoordinates)]
         private static void HandleGettingCoordinates(Message message)
         {
-            if (!Client.KoalaSelected || Client.Relaunching) return;
-            bool onMenu = message.GetBool();
-            //Console.Write("\n" + onMenu);
-            ushort clientId = message.GetUShort();
-            //Console.Write(" " + clientID);
-            //if (onMenu) return;
-            string koalaName = message.GetString();
-            //Console.Write(" " + koalaName);
-            byte[] coordinates = message.GetBytes();
-            //Console.Write(" " + coordinates[0] + ", " + coordinates[1] + ", " + coordinates[2]);
-            float yaw = message.GetFloat();
-            //Console.Write(" " + yaw + "\n");
-            //SANITY CHECK THAT WE HAVEN'T BEEN SENT OUR OWN COORDINATES AND WE AREN'T LOADING, ON THE MENU, OR IN A DIFFERENT LEVEL 
-            if (!PlayerHandler.Players.TryGetValue(Client._client.Id, out Player p) ||
-                !Client.HLevel.InMainWorld ||
-                p.Koala.KoalaName == koalaName
-            )
-            {
+            if (!Client.KoalaSelected || Client.Relaunching) 
                 return;
-            }
-            Console.WriteLine();
-            Console.WriteLine(Client.HKoala.KoalaBaseAddrs[koalaName].ToString("X"));
-            //WRITE POSITION AND ROTATION
-            ProcessHandler.WriteData(Client.HKoala.KoalaBaseAddrs[koalaName] + 0x40, new RotationMatrix(yaw).GetBytes(), $"{koalaName} rotation");
-            ProcessHandler.WriteData(Client.HKoala.KoalaBaseAddrs[koalaName] + 0x70, coordinates, $"Writing coordinates for koala {koalaName}");
+            var clientId = message.GetUShort();
+            if (!PlayerHandler.Players.TryGetValue(clientId, out var player))
+                return; 
+            player.OnMenu = message.GetBool();
+            if (player.OnMenu) 
+                return;
+            player.PositionData.SetPos(message.GetFloats());
+            player.PositionData.Yaw = message.GetFloat();
+            if (!PlayerHandler.Players.TryGetValue(Client._client.Id, out var self) ||
+                !Client.HLevel.InMainWorld 
+                || self.Koala.KoalaName == player.Koala.KoalaName)
+                return;
             
+            
+            ProcessHandler.WriteData(Client.HKoala.KoalaBaseAddrs[player.Koala.KoalaName] + 0x40, new RotationMatrix(player.PositionData.Yaw).GetBytes(), $"{player.Koala.KoalaName} rotation");
+            ProcessHandler.WriteData(Client.HKoala.KoalaBaseAddrs[player.Koala.KoalaName] + 0x70, player.PositionData.GetPosBytes(), $"Writing coordinates for koala {player.Koala.KoalaName}");
         }
     }
 }

@@ -23,18 +23,18 @@ namespace MT2PClient
             Players = new();
         }
 
-        public static void AddPlayer(string koalaName, string name, ushort clientID, bool isHost)
+        public static void AddPlayer(string koalaName, string name, ushort clientId, bool isHost)
         {
             Koala koala = new(koalaName, Array.IndexOf(KoalaHandler.KoalaNames, koalaName));
-            Players.Add(clientID, new Player(koala, name, clientID, isHost, false));
+            Players.Add(clientId, new Player(koala, name, clientId, isHost, false, true));
         }
 
         public static void AnnounceSelection(string koalaName, string name, bool isHost)
         {
             var message = Message.Create(MessageSendMode.Reliable, MessageID.KoalaSelected);
+            message.AddUShort(Client._client.Id);
             message.AddString(koalaName);
             message.AddString(name);
-            message.AddUShort(Client._client.Id);
             message.AddBool(isHost);
             Client._client.Send(message);
             Client.KoalaSelected = true;

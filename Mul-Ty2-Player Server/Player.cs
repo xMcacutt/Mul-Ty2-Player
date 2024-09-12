@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using MT2PClient;
 
 namespace MT2PServer
 {
@@ -14,8 +15,7 @@ namespace MT2PServer
         public bool IsHost;
         public bool IsReady;
         public bool OnMenu;
-        public byte[] Coordinates;
-        public float Yaw;
+        public PlayerPositionData PositionData;
         public string CurrentLevel;
         public string PreviousLevel = "mainmenu";
 
@@ -25,7 +25,7 @@ namespace MT2PServer
             Name = name;
             ClientID = id;
             IsHost = isHost;
-            Coordinates = new byte[12];
+            PositionData = new PlayerPositionData();
             CurrentLevel = "mainmenu";
             IsReady = isReady;
             OnMenu = onMenu;

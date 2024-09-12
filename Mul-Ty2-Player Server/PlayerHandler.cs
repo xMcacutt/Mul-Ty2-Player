@@ -5,6 +5,7 @@ using System.Linq;
 using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
+using MT2PClient;
 
 namespace MT2PServer
 {
@@ -41,9 +42,19 @@ namespace MT2PServer
             if (Players.TryGetValue(fromClientId, out Player player))
             {
                 player.OnMenu = message.GetBool();
-                player.Coordinates = message.GetBytes();
-                player.Yaw = message.GetFloat();
+                player.PositionData.SetPos(message.GetFloats());
+                player.PositionData.Yaw = message.GetFloat();
             }
+        }
+        
+        public void SendCoordinates(ushort clientID, PlayerPositionData positionData, bool onMenu)
+        {
+            var message = Message.Create(MessageSendMode.Unreliable, MessageID.KoalaCoordinates);
+            message.AddUShort(clientID);
+            message.AddBool(onMenu);
+            message.AddFloats(positionData.GetFloats());
+            message.AddFloat(positionData.Yaw);
+            Server._Server.SendToAll(message, clientID);
         }
     }
 }

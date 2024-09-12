@@ -24,6 +24,10 @@
     </None>
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Mul-Ty2-Player\Mul-Ty2-Player Client.csproj" />
+  </ItemGroup>
+
   <ProjectExtensions><VisualStudio><UserProperties /></VisualStudio></ProjectExtensions>
 
 </Project>
