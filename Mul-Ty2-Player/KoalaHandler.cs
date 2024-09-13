@@ -115,7 +115,7 @@ namespace MT2PClient
                 return;
             
             
-            ProcessHandler.WriteData(Client.HKoala.KoalaBaseAddrs[player.Koala.KoalaName] + 0x40, new RotationMatrix(player.PositionData.Yaw).GetBytes(), $"{player.Koala.KoalaName} rotation");
+            ProcessHandler.WriteData(Client.HKoala.KoalaBaseAddrs[player.Koala.KoalaName] + 0x40, new RotationMatrix(player.PositionData.Yaw, 2.0f).GetBytes(), $"{player.Koala.KoalaName} rotation");
             ProcessHandler.WriteData(Client.HKoala.KoalaBaseAddrs[player.Koala.KoalaName] + 0x70, player.PositionData.GetPosBytes(), $"Writing coordinates for koala {player.Koala.KoalaName}");
         }
     }

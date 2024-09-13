@@ -9,9 +9,14 @@ public struct PlayerPositionData
     public float Yaw;
     public float Roll;
 
-    public float[] GetFloats()
+    public float[] GetPosFloats()
     {
         return new[] { X, Y, Z };
+    }
+    
+    public float[] GetRotFloats()
+    {
+        return new[] { Pitch, Yaw, Roll };
     }
 
     public void SetPos(float[] coords)
@@ -20,9 +25,17 @@ public struct PlayerPositionData
         Y = coords[1];
         Z = coords[2];
     }
+    
+    public void SetRot(float[] coords)
+    {
+        Pitch = coords[0];
+        Yaw = coords[1];
+        Roll = coords[2];
+    }
 
     public byte[] GetPosBytes()
     {
         return BitConverter.GetBytes(X).Concat(BitConverter.GetBytes(Y)).Concat(BitConverter.GetBytes(Z)).ToArray();
     }
+    
 }

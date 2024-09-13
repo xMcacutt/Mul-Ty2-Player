@@ -52,7 +52,7 @@ namespace MT2PServer
             var message = Message.Create(MessageSendMode.Unreliable, MessageID.KoalaCoordinates);
             message.AddUShort(clientID);
             message.AddBool(onMenu);
-            message.AddFloats(positionData.GetFloats());
+            message.AddFloats(positionData.GetPosFloats());
             message.AddFloat(positionData.Yaw);
             Server._Server.SendToAll(message, clientID);
         }

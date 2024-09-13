@@ -37,10 +37,46 @@ namespace MT2PClient
             M33 = (float)(Math.Cos(pitch) * Math.Cos(roll));
             M34 = 0.0f;
         }
+        
+        public RotationMatrix(float pitch, float yaw, float roll, float scaleX, float scaleY, float scaleZ)
+        {
+            M11 = (float)(Math.Cos(yaw) * Math.Cos(pitch)) * scaleX;
+            M12 = (float)((Math.Cos(yaw) * Math.Sin(pitch) * Math.Sin(roll)) - (Math.Sin(yaw) * Math.Cos(roll)));
+            M13 = (float)((Math.Cos(yaw) * Math.Sin(pitch) * Math.Cos(roll)) + (Math.Sin(yaw) * Math.Sin(roll)));
+            M14 = 0.0f;
+    
+            M21 = (float)(Math.Sin(yaw) * Math.Cos(pitch)) * scaleY;
+            M22 = (float)((Math.Sin(yaw) * Math.Sin(pitch) * Math.Sin(roll)) + (Math.Cos(yaw) * Math.Cos(roll)));
+            M23 = (float)((Math.Sin(yaw) * Math.Sin(pitch) * Math.Cos(roll)) - (Math.Cos(yaw) * Math.Sin(roll)));
+            M24 = 0.0f;
+
+            M31 = (float)-Math.Sin(pitch) * scaleZ;
+            M32 = (float)(Math.Cos(pitch) * Math.Sin(roll));
+            M33 = (float)(Math.Cos(pitch) * Math.Cos(roll));
+            M34 = 0.0f;
+        }
+        
+        public RotationMatrix(float yaw, float scale)
+        {
+            M11 = (float)Math.Cos(yaw) * scale;
+            M12 = 0.0f;
+            M13 = (float)Math.Sin(yaw) * scale;
+            M14 = 0.0f;
+    
+            M21 = 0.0f;
+            M22 = scale;
+            M23 = 0.0f;
+            M24 = 0.0f;
+    
+            M31 = (float)-Math.Sin(yaw) * scale; 
+            M32 = 0.0f;
+            M33 = (float)Math.Cos(yaw) * scale;
+            M34 = 0.0f;
+        }
 
         public RotationMatrix(float yaw)
         {
-            M11 = (float)Math.Cos(yaw);
+            M11 = (float)Math.Cos(yaw); 
             M12 = 0.0f;
             M13 = (float)Math.Sin(yaw);
             M14 = 0.0f;
