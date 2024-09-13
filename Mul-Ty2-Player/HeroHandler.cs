@@ -38,12 +38,12 @@ namespace MT2PClient
                 _tyRotAddr = PointerCalculations.GetPointerAddress(TY_POS_ROT_BASE_ADDRESS, TY_ROT_POINTER_OFFSETS);
                 _pathsValid = true;
             }
-            ProcessHandler.TryRead(_tyPosAddr + 0, out PositionData.X, true);
-            ProcessHandler.TryRead(_tyPosAddr + 4, out PositionData.Y, true);
-            ProcessHandler.TryRead(_tyPosAddr + 8, out PositionData.Z, true);
-            ProcessHandler.TryRead(_tyRotAddr + 0, out PositionData.Pitch, true);
-            ProcessHandler.TryRead(_tyRotAddr + 4, out PositionData.Yaw, true);
-            ProcessHandler.TryRead(_tyRotAddr + 8, out PositionData.Roll, true);
+            ProcessHandler.TryRead(_tyPosAddr + 0, out PositionData.X, false);
+            ProcessHandler.TryRead(_tyPosAddr + 4, out PositionData.Y, false);
+            ProcessHandler.TryRead(_tyPosAddr + 8, out PositionData.Z, false);
+            ProcessHandler.TryRead(_tyRotAddr + 0, out PositionData.Pitch, false);
+            ProcessHandler.TryRead(_tyRotAddr + 4, out PositionData.Yaw, false);
+            ProcessHandler.TryRead(_tyRotAddr + 8, out PositionData.Roll, false);
         }
 
         public void SendCoordinates()
